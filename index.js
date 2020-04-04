@@ -2,48 +2,65 @@ const express = require("express")
 const app = express()
 const champ = require ("./model/championnat")
 const mysql = require("mysql")
-const connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'foot',
-    insecureAuth : true
+const service = require("./model/service")
+const bodyParser = require("body-parser")
+const cors = require("cors")
+app.use(function(request, response, next){ 
+ 
+    response.header('Access-Control-Allow-Origin', '*');     
+    response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');     
+    response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, ContentLength, X-Requested-With'); 
+ next()
+   //Handle Preflight    if (reqest.method === 'OPTIONS') {       response.status(200).send();    }    else {       next();    } 
+ 
 });
 
-connection.connect();
-
-
+app.use(cors({
+    origin : '*'
+}))
+app.use(express.static('dossier'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false}))
 
 //champ = new champ();
-app.route('/')
+app.route('/ici')
     .get((req,res)=>{
-        champ.anner = 2000;
-        champ.temps = 1;
-
-        console.log(champ)
-       
-
-             return new Promise((resolve,reject)=>{
-
-             connection.query("call afficher()",(err,result)=>{
-            if (err) throw err
-            resolve(result)
-            console.log(result)
-            res.send(result)
-        });
         
-        })
         
       
        
        
 
     })
-    .post((res,req)=>{
+    .post((req,res)=>{
+        console.log(req.body.championnat)
+        if(req.body.championnat){
+            console.log("ah championnat")
+            service.afficherChampionnat((err,rows)=>{
+                if(err) res.send(err)
+
+                res.send(rows)
+            })
+        }
+        else if(req.body.equipe){
+            
+            service.afficherEquipe((err,rows)=>{
+                if(err) res.send(err)
+
+                res.send(rows)
+            })
+
+        }
+        else if(req.body.joueur){
+        
+        }
+        else{
+            res.send("probleme")
+        }
 
     })
 
 
-app.listen(process.env.PORT || 4000,()=>{
-    console.log("application en cours port 4000")
+app.listen(process.env.PORT || 400,()=>{
+    console.log("application en cours port 400")
 })

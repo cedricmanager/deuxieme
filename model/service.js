@@ -4,11 +4,15 @@ var connection = mysql.createConnection({
     host : 'localhost',
     user:'root',
     password :'',
-    database : 'foot'
+    database : 'foot',
+    port :3306
 })
 
 connection.connect((err)=>{
-   console.log("probleme de connection"+err.code)
+    if(err)console.log("probleme de connection : "+err)
+
+
+   
 })
 
   class Service{
@@ -112,6 +116,9 @@ connection.connect((err)=>{
     //match
         //page(5)
 
+
+
+        
 
 
 }

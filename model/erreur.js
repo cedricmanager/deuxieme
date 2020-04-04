@@ -15,13 +15,13 @@ class error {
         switch (id) {
                  case 1045: error ="Le host ne peut pas accéder "
                 
-                break;
-                case 1045: error = " le host a un movais mot de passe "
+                 break;
+                 case 1045: error = " le host a un movais mot de passe "
                 
-                break;
+                 break;
         
-            default: error = "error mysql qui n'est pas gérer"
-                break;
+                 default: error = "error mysql qui n'est pas gérer"
+                 break;
         }
 
         return nombre;
